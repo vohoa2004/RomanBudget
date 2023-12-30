@@ -58,20 +58,24 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         String usertype = request.getParameter("usertype");
         Account account = acd.login(username, password, usertype);
-        
+
         if (account != null) {// neu ton tai account <=> login thanh cong => tao session cho account de luu phien hoat dong
             HttpSession session = request.getSession();
             session.setAttribute("account", account);
-            if(account.getUsertype().equals("consul")) {
+            if (account.getUsertype().equals("consul")) {
                 RegionDao rd = new RegionDao();
-                Region r = rd.getRegionByConsulId(account.getId());
-                session.setAttribute("region", r);
-                
+                try {
+                    Region r = rd.getRegionByConsulId(account.getId());
+                    session.setAttribute("region", r);
+
+                } catch (Exception e) {
+                    response.sendRedirect("index.html");
+                }
+
                 ConsulDao cd = new ConsulDao();
                 Consul c = cd.getById(account.getId());
                 session.setAttribute("consul", c);
-            }
-            else {
+            } else {
                 RegionDao rd = new RegionDao();
                 TaxCategoryDao tcd = new TaxCategoryDao();
                 List<Region> r = rd.getAll();
@@ -79,14 +83,14 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("regions", r);
                 session.setAttribute("taxCategories", tc);
             }
-            
+
             response.sendRedirect("region");
         } else {
             String error = "Invalid account!";
             request.setAttribute("error", error);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        
+
     }
-    
+
 }

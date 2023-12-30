@@ -35,10 +35,10 @@ public class RegionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         RegionDao rd = new RegionDao();
         HttpSession session = request.getSession();
-        List<Region> list1 = getListByRole(session, rd);
+        List<Region> list1 = getListByRole(session, rd, response);
         // get budget
         for (Region r : list1) {
             double budget = rd.getBudgetOfRegion(r.getId());
@@ -84,7 +84,7 @@ public class RegionServlet extends HttpServlet {
 
         // lay ds region
         HttpSession session = request.getSession();
-        List<Region> list1 = getListByRole(session, rd);
+        List<Region> list1 = getListByRole(session, rd, response);
         if (year1_raw.length() <= 0 || year2_raw.length() <= 0 || month1_raw.length() <= 0 || month2_raw.length() <= 0) {
             request.setAttribute("annouce", "Please enter full 4 parameters to filter!");
             for (Region r : list1) {
@@ -100,7 +100,7 @@ public class RegionServlet extends HttpServlet {
                 r.setTotalBudget(rd.getBudgetOfRegion(r.getId(), year1, year2, month1, month2));
             }
         }
-        
+
         // phan trang
         int page;
         String xpage = request.getParameter("page"); // xac dinh request duoc gui tu trang nao
@@ -110,7 +110,7 @@ public class RegionServlet extends HttpServlet {
         } else {
             page = Integer.parseInt(xpage);
         }
-        
+
         List<Region> list = paging(page, 5, list1, rd);
         // set attribute
         request.setAttribute("data", list);
@@ -121,19 +121,25 @@ public class RegionServlet extends HttpServlet {
         request.getRequestDispatcher("region.jsp").forward(request, response);
     }
 
-    private List<Region> getListByRole(HttpSession session, RegionDao rd) {
+    private List<Region> getListByRole(HttpSession session, RegionDao rd, HttpServletResponse response)
+            throws ServletException, IOException {
         List<Region> list = new ArrayList<>();
         Account acc = (Account) session.getAttribute("account");
 
         if (acc.getUsertype().equals("emperor")) {
             list = rd.getAll();
         } else {
-            Region region = (Region) session.getAttribute("region");
-            list.add(rd.getRegionById(region.getId()));
+            try {
+                Region region = (Region) session.getAttribute("region");
+                list.add(rd.getRegionById(region.getId()));
+            } catch (Exception e) {
+//                response.sendError(404, "You have no regions to manage!");
+                response.sendRedirect("index.html");
+            }
         }
         return list;
     }
-    
+
     private List<Region> paging(int page, int numperpage, List<Region> originalList, RegionDao rd) {
         List<Region> result;
         int size = originalList.size();
