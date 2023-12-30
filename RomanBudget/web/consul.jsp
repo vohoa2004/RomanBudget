@@ -18,7 +18,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="layout/header.jsp" />
         <div class="content">
             <h1>List of consuls</h1>
             <c:set var="page" value="${requestScope.page}" />
@@ -31,6 +31,7 @@
                 <thead class="thead-dark"> 
                     <tr>
                         <th>ID</th>
+                        <th>Username</th>
                         <th>Name</th>
                         <th>Age</th>
                         <th>Address</th>
@@ -43,6 +44,7 @@
                     <c:forEach items="${requestScope.data}" var="c">
                         <tr>
                             <td>${c.id}</td>
+                            <th>${c.username}</th>
                             <td>${c.name}</td>
                             <td>${c.age}</td>
                             <td>${c.address}</td>
@@ -54,7 +56,46 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <br/>
+            <h3 class="text-primary">Add new consul</h3>
+            <form action="consul" method="post">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" class="form-control" id="age" name="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="termCount">Term Count:</label>
+                    <input type="number" class="form-control" id="termCount" name="termCount" required>
+                </div>
+                <div class="form-group">
+                    <label for="salary">Salary:</label>
+                    <input type="number" class="form-control" id="salary" name="salary" step="0.01" required>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="nobleStatus" name="nobleStatus">
+                    <label class="form-check-label" for="nobleStatus">Noble Status</label>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image URL:</label>
+                    <input type="text" class="form-control" id="image" name="image">
+                </div>
+                <br/>
+                <h6 class="text-warning">Warning: Default password for new user is: 000</h6>
+                <button type="submit" class="btn btn-primary">Create Consul</button>
+                
+            </form>
+
         </div>
-        <jsp:include page="footer.jsp" />
+
+
+        <jsp:include page="layout/footer.jsp" />
     </body>
 </html>

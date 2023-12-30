@@ -25,6 +25,14 @@ public class Account {
         this.usertype = usertype;
     }
 
+    public Account(String username, String password, String usertype) {
+        this.username = username;
+        this.password = password;
+        this.usertype = usertype;
+    }
+    
+    
+
     public int getId() {
         return id;
     }

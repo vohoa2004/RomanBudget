@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.AccountDao;
 import dao.ConsulDao;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,10 +39,11 @@ public class ConsulServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        if ("list".equals(action)) {
-            doGetList(request, response);
-        } else {
+        if ("info".equals(action)) {
             doGetInfo(request, response);
+        }
+        else {
+            doGetList(request, response);
         }
     }
 
@@ -106,6 +108,27 @@ public class ConsulServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String name = request.getParameter("name");
+        int age = Integer.parseInt(request.getParameter("age"));
+        String address = request.getParameter("address");
+        int termCount = Integer.parseInt(request.getParameter("termCount"));
+        double salary = Double.parseDouble(request.getParameter("salary"));
+        boolean nobleStatus = Boolean.parseBoolean(request.getParameter("nobleStatus"));
+        String image = request.getParameter("image");
+        
+        String username = name.split(" ")[0].toLowerCase();
+        String password = "000"; //default password
+        
+        Account account = new Account(username, password, "consul");
+        AccountDao acd = new AccountDao();
+        acd.insert(account);
+        Account accountCreated = acd.login(account.getUsername(), account.getPassword(), account.getUsertype());
+        
+        Consul consul = new Consul(accountCreated.getId(), name, age, address, termCount, salary, nobleStatus, image);
+        ConsulDao cd = new ConsulDao();        
+        cd.insert(consul);
+        response.sendRedirect("consul");
     }
 
     private List<Consul> paging(int page, int numperpage, List<Consul> originalList, ConsulDao rd) {

@@ -17,7 +17,7 @@
 
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="layout/header.jsp" />
         <div class="content">
             <h1>List of versailles</h1>
             <c:set var="page" value="${requestScope.page}"/>
@@ -58,5 +58,6 @@
                 </c:forEach>
             </div>
         </div>
+             <jsp:include page="layout/footer.jsp" />
     </body>
 </html>

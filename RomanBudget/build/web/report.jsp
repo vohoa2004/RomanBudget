@@ -19,7 +19,7 @@
         <script src="//cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="layout/header.jsp" />
         <div class="content">
             <c:if test="${sessionScope.account.usertype eq 'consul'}">
                 <h1>Create new report</h1>
@@ -179,6 +179,6 @@
             });
 
         </script>
-        <jsp:include page="footer.jsp" />
+        <jsp:include page="layout/footer.jsp" />
     </body>
 </html>

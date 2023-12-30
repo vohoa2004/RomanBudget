@@ -19,7 +19,7 @@
 
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="layout/header.jsp" />
         <div class="content">
             <h1>Overview</h1>
 
@@ -97,6 +97,6 @@
                     </h5>
                 </div>
             </c:if>
-        <jsp:include page="footer.jsp"/>
+        <jsp:include page="layout/footer.jsp"/>
     </body>
 </html>

@@ -5,8 +5,8 @@
  */
 package controller;
 
+import dao.AccountDao;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,16 +51,32 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    }
+        String currentPass = request.getParameter("currentPassword");
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        HttpSession session = request.getSession();
+        Account acc = (Account) session.getAttribute("account");
+        AccountDao acd = new AccountDao();
+        String message;
+        if (!acc.getPassword().equals(currentPass)) {
+            message = "Wrong current password!";
+            request.setAttribute("message", message);
+            request.getRequestDispatcher("update-pass.jsp").forward(request, response);
+        } else {
+            String newpass = request.getParameter("newpass");
+            String confirm = request.getParameter("confirm");
+
+            if (!confirm.equals(newpass)) {
+                message = "Confirm password must match new password!";
+                request.setAttribute("message", message);
+                request.getRequestDispatcher("update-pass.jsp").forward(request, response);
+            } else {
+
+                acd.changePassword(newpass, acc.getId());
+                message = "Update password successfully! Please login again!";
+                request.setAttribute("message", message);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+        }
+    }
 
 }

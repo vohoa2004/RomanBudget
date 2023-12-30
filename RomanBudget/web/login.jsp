@@ -25,6 +25,12 @@
                             <p>${requestScope.error}</p>
                         </div>
                     </c:if>
+                    
+                    <c:if test="${requestScope.message != null}">
+                        <div class="alert alert-success">
+                            <p>${requestScope.message}</p>
+                        </div>
+                    </c:if>
 
                     <form action="login" method="post" class="border rounded p-4">
                         <div class="form-group">

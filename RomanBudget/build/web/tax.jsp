@@ -18,7 +18,7 @@
 
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="layout/header.jsp" />
         <div class="content">
             <h1>List of Taxes</h1>
             <c:set var="page" value="${requestScope.page}"/>
@@ -72,6 +72,8 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <br/>
+            <h5 class='text-warning'>Total taxes and tributes amount: ${requestScope.totalTax}</h5>
             <c:if test="${sessionScope.account.usertype eq 'emperor'}">
                 <h1>New Tax</h1>
                 <form action="tax" method="post" class="container mt-5">
@@ -118,7 +120,9 @@
                 </form>
 
             </c:if>
+               
 
         </div>
+             <jsp:include page="layout/footer.jsp" />
     </body>
 </html>

@@ -20,7 +20,7 @@
         <script src="//cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="layout/header.jsp" />
         <div class="content">
             <h1>List of king's requests</h1>
             <c:set var="page" value="${requestScope.page}"/>
@@ -93,7 +93,7 @@
 
 
         </div>
-        <jsp:include page="footer.jsp" />
+        <jsp:include page="layout/footer.jsp" />
         <script>
             var editor = '';
             $(document).ready(function () {

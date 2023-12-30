@@ -42,6 +42,10 @@ public class TaxServlet extends HttpServlet {
         TaxDao td = new TaxDao();        
         HttpSession session = request.getSession();
         List<Tax> list1 = getListByRole(session, td);
+        double sum = 0;
+        for (Tax x : list1) {
+            sum += x.getTaxAmount();
+        }
         //phan trang
         int page; // page la bien dung de lay ra page number cua trang hien tai (kieu int)
         String xpage = request.getParameter("page"); // xac dinh request duoc gui tu trang nao
@@ -56,6 +60,7 @@ public class TaxServlet extends HttpServlet {
         request.setAttribute("page", page); // danh dau trang hien tai duoc chon
         request.setAttribute("num", numOfPage(list1.size(), 5));
         request.setAttribute("currentPage", "tax");
+        request.setAttribute("totalTax", sum);
 
         request.getRequestDispatcher("tax.jsp").forward(request, response);
     }

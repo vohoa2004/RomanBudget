@@ -9,7 +9,7 @@ package model;
  *
  * @author vothimaihoa
  */
-public class Consul{
+public class Consul extends Account{
     private int id;
     private String name;
     private int age;
@@ -32,14 +32,27 @@ public class Consul{
         this.nobleStatus = nobleStatus;
     }
 
+    public Consul(int id, String name, int age, String address, int termCount, double salary, boolean nobleStatus, String image) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.termCount = termCount;
+        this.salary = salary;
+        this.nobleStatus = nobleStatus;
+        this.image = image;
+    }
+
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }
