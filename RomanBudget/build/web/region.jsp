@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Region</title>
-        <link rel="stylesheet" href="./css/stylelisttab.css"/>
+        <link rel="stylesheet" href="./css/style.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
@@ -74,23 +74,29 @@
                     <tr>
                         <td>${c.id}</td>
                         <td>${c.name}</td>
-                        <!--Tam thoi de href nhu vay, sau nay chinh lai theo dung id -->
-                        <c:if test = "${c.consul != null}"><td><a href="consul">${c.consul.name}</a></td></c:if>
+                        <c:if test = "${c.consul != null}"><td><a href="consul?action=info&id=${c.consul.id}">${c.consul.name}</a></td></c:if>
                         <c:if test = "${c.consul == null}"><td>Doesn't have</td></c:if>
                         <fmt:formatNumber type="currency" value="${c.totalBudget}" currencySymbol="$" var="currencyValue"/>
                         <td>${currencyValue}</td>
                         <!--tinh sum trong vong lap-->
                         <c:set var="sum" value="${sum + c.totalBudget}"></c:set>
-                    </tr> 
+                        </tr> 
                 </c:forEach>
             </table>
-            <c:if test="${sessionScope.account.usertype eq 'emperor'}">
-                <h6>
-                    Total budget of kingdom: 
-                    <fmt:formatNumber type="currency" value="${sum}" currencySymbol="$" var="currencyValue2"/>
-                    ${currencyValue2}
-                </h6>
-            </c:if>
+            <br/>
+            
         </div>
+                <c:if test="${sessionScope.account.usertype eq 'emperor'}">
+                <div style="text-align: center">
+                    <h5 style="color: red">                    
+                        Total budget of kingdom: 
+                    </h5>
+                    <h5 style="color: blue">
+                        <fmt:formatNumber type="currency" value="${sum}" currencySymbol="$" var="currencyValue2"/>
+                        ${currencyValue2}
+                    </h5>
+                </div>
+            </c:if>
+        <jsp:include page="footer.jsp"/>
     </body>
 </html>

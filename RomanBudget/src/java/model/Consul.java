@@ -17,6 +17,7 @@ public class Consul{
     private int termCount;
     private double salary;
     private boolean nobleStatus;
+    private String image;
 
     public Consul() {
     }
@@ -86,6 +87,15 @@ public class Consul{
     public void setNobleStatus(boolean nobleStatus) {
         this.nobleStatus = nobleStatus;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    
 
     @Override
     public String toString() {

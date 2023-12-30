@@ -10,16 +10,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="./css/stylelisttab.css"/>
-        <style>
-            .navbar-nav li:hover {
-                background-color: orange;
-            }
-
-            .navbar-nav .active {
-                background-color: lightgreen; 
-            }
-        </style>
+        <link rel="stylesheet" href="./css/style.css"/>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-success ">
@@ -35,8 +26,12 @@
                     <li class="nav-item ${currentPage == 'versaille' ? 'active' : ''}">
                         <a class="nav-link text-light" href="versaille">Versailles</a>
                     </li>
-                    <li class="nav-item ${currentPage == 'consul' ? 'active' : ''}">
-                        <a class="nav-link text-light" href="consul">Consul</a>
+                    
+                    <c:if test="${sessionScope.account.usertype eq 'emperor'}">
+                        <li class="nav-item ${currentPage == 'consul' ? 'active' : ''}">
+                        <a class="nav-link text-light" href="consul?action=list">Consul</a>
+                    </c:if>
+                    
                     </li>
                     <li class="nav-item ${currentPage == 'financial-transaction' ? 'active' : ''}">
                         <a class="nav-link text-light" href="financial-transaction">Financial Transaction</a>
@@ -52,13 +47,11 @@
                     </li>
                 </ul>
             </div>
-            <c:if test="${sessionScope.account.usertype eq 'consul'}"><p class="text-light badge badge-primary">${sessionScope.consul.name}</p> </c:if>
-            <c:if test="${sessionScope.account.usertype eq 'emperor'}"><p class="text-light badge badge-primary">Emperor Augustus</p>   </c:if>
+                    <c:if test="${sessionScope.account.usertype eq 'consul'}"><a href="consul?action=info"><p class="text-success badge bg-warning">${sessionScope.consul.name}</p></a> </c:if>
+            <c:if test="${sessionScope.account.usertype eq 'emperor'}"><a href="consul?action=info&id=9"><p class="text-success badge bg-warning">Emperor Augustus</p></a>   </c:if>
             &nbsp;&nbsp;&nbsp;
-            <a href="logout"><button class="btn btn-warning">Logout</button> </a>   
-            
+            <a href="logout"><button class="btn btn-danger">Logout</button> </a>   
+
         </nav>
-
-
     </body>
 </html>

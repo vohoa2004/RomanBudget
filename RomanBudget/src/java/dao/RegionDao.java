@@ -153,6 +153,7 @@ public class RegionDao extends DBContext {
         RegionDao rd = new RegionDao();
         List<Region> list = rd.getAll();
         for (Region r : list) {
+            System.out.println(r.toString());
             System.out.println(rd.getBudgetOfRegion(r.getId()));
         }
     }

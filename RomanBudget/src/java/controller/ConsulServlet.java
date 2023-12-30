@@ -37,30 +37,37 @@ public class ConsulServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String action = request.getParameter("action");
+        if ("list".equals(action)) {
+            doGetList(request, response);
+        } else {
+            doGetInfo(request, response);
+        }
+    }
+
+    protected void doGetList(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         List<Consul> list1 = new ArrayList<>();
         ConsulDao cd = new ConsulDao();
-               
-        HttpSession session = request.getSession();
-        Account acc = (Account)session.getAttribute("account");
 
-        if (acc.getUsertype().equals("emperor")){
+        HttpSession session = request.getSession();
+        Account acc = (Account) session.getAttribute("account");
+
+        if (acc.getUsertype().equals("emperor")) {
             list1 = cd.getAll();
         }
-        else {
-            Consul c = cd.getById(acc.getId());
-            list1.add(c);
-        }
-        
+
         // paging
         int page;
-       
-        String xpage = request.getParameter("page"); 
+
+        String xpage = request.getParameter("page");
         if (xpage == null) {
             page = 1; // lan dau tien chay khong co trang => cho chay ra trang 1
         } else {
             page = Integer.parseInt(xpage);
         }
-        
+
         List<Consul> list = paging(page, 5, list1, cd);
         request.setAttribute("data", list);
         request.setAttribute("page", page); // danh dau trang hien tai duoc chon
@@ -68,6 +75,24 @@ public class ConsulServlet extends HttpServlet {
         request.setAttribute("currentPage", "consul");
 
         request.getRequestDispatcher("consul.jsp").forward(request, response);
+    }
+
+    protected void doGetInfo(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        ConsulDao cd = new ConsulDao();
+        HttpSession session = request.getSession();
+        Account acc = (Account) session.getAttribute("account");
+        Consul consul ;
+        if (acc.getUsertype().equals("consul")) {
+            consul = (Consul) session.getAttribute("consul");
+        } else {
+            int id = Integer.parseInt(request.getParameter("id"));
+            consul = cd.getById(id);
+        }
+
+        request.setAttribute("consul", consul);
+        request.getRequestDispatcher("consul-info.jsp").forward(request, response);
     }
 
     /**
@@ -83,7 +108,6 @@ public class ConsulServlet extends HttpServlet {
             throws ServletException, IOException {
     }
 
-    
     private List<Consul> paging(int page, int numperpage, List<Consul> originalList, ConsulDao rd) {
         List<Consul> result;
         int size = originalList.size();

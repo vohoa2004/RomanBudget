@@ -15,9 +15,9 @@ table{
 .content{
     margin: auto;
     width: 80%;
-    float: left;
-    margin-left: 30px;
-    height: auto 
+    margin-left: 5%; 
+    margin-top: 3%;
+    height: auto;
 }
 
 .pagination {
@@ -77,6 +77,15 @@ table{
     background-color: lightgreen; /* Màu xanh lá nhạt khi được chọn */
 }
 
+
+
 .versaille img{
     width: 100px;
+}
+
+.footer{
+    margin-top: 5%;
+    color: white;
+    padding: 10px;
+    text-align: center;
 }

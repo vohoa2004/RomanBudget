@@ -20,7 +20,7 @@ import utils.DBContext;
 public class ConsulDao extends DBContext{
     public List<Consul> getAll() {
         List<Consul> list = new ArrayList<>();
-        String sql = "select * from Consul";
+        String sql = "select * from Consul where id <> 9";
         try {
            
             PreparedStatement st = connection.prepareStatement(sql);
@@ -62,6 +62,7 @@ public class ConsulDao extends DBContext{
                 c.setTermCount(rs.getInt("term_count"));
                 c.setSalary(rs.getDouble("salary"));
                 c.setNobleStatus(rs.getBoolean("noble_status"));
+                c.setImage(rs.getString("image"));
                 result = c;
             }
         } catch (SQLException e) {
