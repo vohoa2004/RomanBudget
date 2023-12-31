@@ -32,7 +32,7 @@
                 </c:forEach>
             </div>
             <!--filter to cal budget in specific time-->
-            <form action="region" method="post">
+            <form action="region?action=filter" method="post">
                 <div class="form-row">
                     <div class="col-md-3 mb-3">
                         <div class="input-group">
@@ -63,40 +63,86 @@
             <table border="1" class="table table-bordered table-striped"> <!--Du lieu dua vao table-->
                 <thead class="thead-dark">
                     <tr>
-                        <th>ID</th>
+                        <th>Region ID</th>
                         <th>Name</th>
-                        <th>Consul</th>
                         <th>Total budget</th>
+                        <th>Consul</th>
+                        <th>Term start year</th>
+                        <th>Status</th>
+
                     </tr>
                 </thead>
-                <c:set var="sum" value="${0}"></c:set>
                 <c:forEach items="${requestScope.data}" var="c">
                     <tr>
-                        <td>${c.id}</td>
-                        <td>${c.name}</td>
-                        <c:if test = "${c.consul != null}"><td><a href="consul?action=info&id=${c.consul.id}">${c.consul.name}</a></td></c:if>
+                        <td>${c.region.id}</td>
+                        <td>${c.region.name}</td>
+
                         <c:if test = "${c.consul == null}"><td>Doesn't have</td></c:if>
-                        <fmt:formatNumber type="currency" value="${c.totalBudget}" currencySymbol="$" var="currencyValue"/>
+                        <fmt:formatNumber type="currency" value="${c.region.totalBudget}" currencySymbol="$" var="currencyValue"/>
                         <td>${currencyValue}</td>
-                        <!--tinh sum trong vong lap-->
-                        <c:set var="sum" value="${sum + c.totalBudget}"></c:set>
-                        </tr> 
+                        <c:if test = "${c.consul != null}">
+                            <td><c:if test = "${sessionScope.account.usertype eq 'emperor'}">
+                                    <a href="consul?action=info&id=${c.consul.id}">
+                                        ${c.consul.name}
+                                    </a>
+                                </c:if>
+                                <c:if test = "${sessionScope.account.usertype eq 'consul'}">
+                                    ${c.consul.name}
+                                </c:if>
+                            </td>
+                        </c:if>
+                        <td>${c.startYear}</td>
+                        <td>${c.status}</td>
+                    </tr> 
                 </c:forEach>
+                
             </table>
             <br/>
-            
-        </div>
-                <c:if test="${sessionScope.account.usertype eq 'emperor'}">
+
+
+            <c:if test="${sessionScope.account.usertype eq 'emperor'}">
                 <div style="text-align: center">
                     <h5 style="color: red">                    
                         Total budget of kingdom: 
                     </h5>
                     <h5 style="color: blue">
-                        <fmt:formatNumber type="currency" value="${sum}" currencySymbol="$" var="currencyValue2"/>
+                        <fmt:formatNumber type="currency" value="${requestScope.sum}" currencySymbol="$" var="currencyValue2"/>
                         ${currencyValue2}
                     </h5>
                 </div>
+                     <!--Assign new consul to a region (optional)
+           1. Checkbox: assign or not
+           2. If yes => do post submit form and insert new consul to consul_region 
+           3. If no => do nothing with table consul_region-->
+            <h3 class="text-primary">Assign consul to region</h3>
+            <form action="region?action=assign" method="post">
+                <div class="form-group">
+                    <label for="startYear">Consul ID: </label>
+                    <input type="number" class="form-control" id="consulId" name="consulId" value="<c:if test="${requestScope.consulId != null}">requestScope.consulId</c:if>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regionId">Region ID:</label>
+                        <select class="form-control" id="regionId" name="regionId">
+                        <c:forEach items="${sessionScope.regions}" var="i">
+                            <option value="${i.id}">
+                                ${i.name} (${i.id})
+                            </option>
+                        </c:forEach>
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label for="startYear">Term Start Year: </label>
+                    <input type="number" class="form-control" id="startYear" name="startYear">
+                </div> 
+                <div class="col-md-3 mb-3">
+                    <button type="submit" class="btn btn-primary">Assign</button>
+                </div>
+            </form>
             </c:if>
+
+           
+        </div>        
         <jsp:include page="layout/footer.jsp"/>
     </body>
 </html>

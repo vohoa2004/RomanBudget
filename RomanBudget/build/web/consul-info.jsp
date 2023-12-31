@@ -41,9 +41,11 @@
                                 <li class="list-group-item">Salary: ${consul.salary}</li>
                                 <li class="list-group-item">Noble Status: ${consul.nobleStatus}</li>
                             </ul>
-                           <a href="update-pass.jsp"> <button class='btn btn-warning' >
-                                Change password
-                               </button></a>
+                            <c:if test="${sessionScope.account.usertype eq 'consul'}">
+                                <a href="update-pass.jsp"> <button class='btn btn-warning' >
+                                        Change password
+                                    </button></a>
+                                </c:if>
                         </div>
 
                     </div>

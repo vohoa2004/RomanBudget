@@ -76,13 +76,13 @@ public class ConsulDao extends DBContext {
     }
 
     public void insert(Consul consul) {
-        String sql = "insert into Consul(id, name, age, address, term_count, salary, noble_status, image) values(?,?,?,?,?,?,?,?)";
+        String sql = "insert into Consul(id, name, birthYear, address, term_count, salary, noble_status, image) values(?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             // Set các tham số vào query để insert
             st.setInt(1, consul.getId());
             st.setString(2, consul.getName());
-            st.setInt(3, consul.getAge());
+            st.setInt(3, consul.getBirthYear());
             st.setString(4, consul.getAddress());
             st.setInt(5, consul.getTermCount());
             st.setDouble(6, consul.getSalary());

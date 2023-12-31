@@ -64,7 +64,7 @@
 
                     <div class="form-group">
                         <label for="regionId">Region ID:</label>
-                        <select class="form-control" id="transactionType" name="regionId" required>
+                        <select class="form-control" id="regionId" name="regionId" required>
                             <c:forEach items="${sessionScope.regions}" var="i">
                                 <option value="${i.id}" ${!empty requestScope.kingRequest && requestScope.kingRequest.regionId eq i.id ? 'selected' : ''}>
                                     ${i.name} (${i.id})

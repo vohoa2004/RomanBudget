@@ -13,6 +13,7 @@ public class Consul extends Account{
     private int id;
     private String name;
     private int age;
+    private int birthYear;
     private String address;
     private int termCount;
     private double salary;
@@ -32,10 +33,10 @@ public class Consul extends Account{
         this.nobleStatus = nobleStatus;
     }
 
-    public Consul(int id, String name, int age, String address, int termCount, double salary, boolean nobleStatus, String image) {
+    public Consul(int id, String name, int birthYear, String address, int termCount, double salary, boolean nobleStatus, String image) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.birthYear = birthYear;
         this.address = address;
         this.termCount = termCount;
         this.salary = salary;
@@ -108,6 +109,16 @@ public class Consul extends Account{
     public void setImage(String image) {
         this.image = image;
     }
+
+    public int getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+    
+    
     
 
     @Override

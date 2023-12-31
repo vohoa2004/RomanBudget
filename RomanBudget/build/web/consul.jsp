@@ -38,9 +38,11 @@
                         <th>Term Count</th>
                         <th>Salary</th>
                         <th>Noble Status</th>
+                        <th>Assign New Region</th>
                     </tr>
                 </thead>
                 <tbody>
+
                     <c:forEach items="${requestScope.data}" var="c">
                         <tr>
                             <td>${c.id}</td>
@@ -51,12 +53,17 @@
                             <td>${c.termCount}</td>
                             <fmt:formatNumber type="currency" value="${c.salary}" currencySymbol="$" var="currencyValue"/>
                             <td>${currencyValue}</td>
-                            <td>${c.nobleStatus ? 'Yes' : 'No'}</td>
+                            <td style="<c:if test="${c.nobleStatus == true}">color: green; font-weight: bold;</c:if>
+                                <c:if test="${c.nobleStatus == false}">color: red; font-weight: bold;</c:if>">
+                                ${c.nobleStatus ? 'Yes' : 'No'}</td>
+                            <td><a href="region?action=assign&consulId=${c.id}">Assign to region</a></td>
                         </tr>
+
                     </c:forEach>
                 </tbody>
             </table>
             <br/>
+            <c:if test="${sessionScope.account.usertype eq 'emperor'}">
             <h3 class="text-primary">Add new consul</h3>
             <form action="consul" method="post">
                 <div class="form-group">
@@ -64,8 +71,8 @@
                     <input type="text" class="form-control" id="name" name="name" required>
                 </div>
                 <div class="form-group">
-                    <label for="age">Age:</label>
-                    <input type="number" class="form-control" id="age" name="age" required>
+                    <label for="birthYear">Birth Year: </label>
+                    <input type="number" class="form-control" id="birthYear" name="birthYear" required>
                 </div>
                 <div class="form-group">
                     <label for="address">Address:</label>
@@ -88,11 +95,11 @@
                     <input type="text" class="form-control" id="image" name="image">
                 </div>
                 <br/>
-                <h6 class="text-warning">Warning: Default password for new user is: 000</h6>
+                <h6 class="text-warning">Warning: Default password for new user is: 000</h6>               
                 <button type="submit" class="btn btn-primary">Create Consul</button>
-                
-            </form>
 
+            </form>
+            </c:if>
         </div>
 
 

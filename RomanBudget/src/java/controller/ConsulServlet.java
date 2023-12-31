@@ -7,6 +7,7 @@ package controller;
 
 import dao.AccountDao;
 import dao.ConsulDao;
+import dao.RegionDao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,7 @@ public class ConsulServlet extends HttpServlet {
         String action = request.getParameter("action");
         if ("info".equals(action)) {
             doGetInfo(request, response);
-        }
-        else {
+        } else {
             doGetList(request, response);
         }
     }
@@ -85,7 +85,7 @@ public class ConsulServlet extends HttpServlet {
         ConsulDao cd = new ConsulDao();
         HttpSession session = request.getSession();
         Account acc = (Account) session.getAttribute("account");
-        Consul consul ;
+        Consul consul;
         if (acc.getUsertype().equals("consul")) {
             consul = (Consul) session.getAttribute("consul");
         } else {
@@ -108,25 +108,30 @@ public class ConsulServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String name = request.getParameter("name");
-        int age = Integer.parseInt(request.getParameter("age"));
+        int birthYear = Integer.parseInt(request.getParameter("birthYear"));
         String address = request.getParameter("address");
         int termCount = Integer.parseInt(request.getParameter("termCount"));
         double salary = Double.parseDouble(request.getParameter("salary"));
-        boolean nobleStatus = Boolean.parseBoolean(request.getParameter("nobleStatus"));
+        String nobleStatus_raw = request.getParameter("nobleStatus");
+        Boolean nobleStatus;
+        if (("on").equals(nobleStatus_raw)) {
+            nobleStatus = true;
+        } else {
+            nobleStatus = false;
+        }       
         String image = request.getParameter("image");
-        
+
         String username = name.split(" ")[0].toLowerCase();
         String password = "000"; //default password
-        
+
         Account account = new Account(username, password, "consul");
         AccountDao acd = new AccountDao();
         acd.insert(account);
         Account accountCreated = acd.login(account.getUsername(), account.getPassword(), account.getUsertype());
-        
-        Consul consul = new Consul(accountCreated.getId(), name, age, address, termCount, salary, nobleStatus, image);
-        ConsulDao cd = new ConsulDao();        
+        Consul consul = new Consul(accountCreated.getId(), name, birthYear, address, termCount, salary, nobleStatus, image);
+        ConsulDao cd = new ConsulDao();
         cd.insert(consul);
         response.sendRedirect("consul");
     }
